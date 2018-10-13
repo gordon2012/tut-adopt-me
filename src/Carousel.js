@@ -26,7 +26,14 @@ class Carousel extends React.Component {
 
     return (
       <div className="carousel">
-        <img src={photos[active].value} alt="primary animal" />
+        <img
+          src={
+            !photos.length
+              ? 'http://placeskull.com/300/300'
+              : photos[active].value
+          }
+          alt="primary animal"
+        />
         <div className="carousel-smaller">
           {photos.map((photo, index) => (
             // eslint-disable-next-line

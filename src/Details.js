@@ -11,13 +11,22 @@ const petfinder = pf({
 
 class Details extends React.Component {
   state = {
-    loading: true
+    loading: true,
+    error: false
   };
 
   componentDidMount() {
     petfinder.pet
       .get({ output: 'full', id: this.props.id })
       .then(data => {
+        if (!data.petfinder.pet) {
+          this.setState({
+            loading: false,
+            error: data.petfinder.header.status.message
+          });
+          return;
+        }
+
         const pet = data.petfinder.pet;
         this.setState({
           name: pet.name,
@@ -39,6 +48,10 @@ class Details extends React.Component {
   render() {
     if (this.state.loading) {
       return <h1>Loading...</h1>;
+    }
+
+    if (this.state.error) {
+      return <h1>Error: {this.state.error}</h1>;
     }
 
     const { name, animal, breed, location, media, description } = this.state;
